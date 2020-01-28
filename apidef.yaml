@@ -42,7 +42,7 @@ paths:
     get:
       tags:
         - retenues
-      summary: Retourne la liste des retenues décrites dans le service éventuellement filtrée pour un département
+      summary: Retourne la liste des retenues sous la forme d'une collection GeoJSON de Features éventuellement filtrée pour un département
       operationId: list
       produces:
         - application/json
