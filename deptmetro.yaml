@@ -1,0 +1,339 @@
+phpDoc:
+  name: deptmetro.yaml
+  title: Départements métropolitains
+  doc: |
+    La clé est le code INSEE départemental.
+    A chaque département est associé le code de la région le contenant
+  journal: |
+    4/4/2017:
+      restructuration complète
+    22-24/3/2017:
+      restructuration complète
+      
+# Schema du fichier
+yamlSchema:
+  ROOT:
+    phpDoc:
+      name: TEXT // nom court informatique utilisé comme clé
+      title: TEXT // titre long pour un humain
+      doc?: TEXT // documentation textuelle
+      journal?: TEXT // documentation complémentaire structurée en fonction du temps
+    data:
+      KEY:
+        title: TEXT // titre officiel (typographie riche)
+        région: TEXT // ID de regionmetro
+        altLabels?:
+          - TEXT // libellés alternatifs
+
+json-ld-model:
+  '@type': AdministrativeArea
+  '@id': http://admin.georef.eu/deptmetro/%KEY
+  name: '%title'
+  containedInPlace: http://admin.georef.eu/regionmetro/%région
+
+prefix: http://admin.georef.eu/deptmetro/
+ypaths:
+  - /$/title=
+  - /$/altLabels-)
+  
+data:
+  '01':
+    title: Ain
+    région: 84
+    altLabels:
+      - AIN
+  '02':
+    title: Aisne
+    région: 32
+  '03':
+    title: Allier
+    région: 84
+  '04':
+    title: Alpes-de-Haute-Provence
+    région: 93
+  '05':
+    title: Hautes-Alpes
+    région: 93
+  '06':
+    title: Alpes-Maritimes
+    région: 93
+  '07':
+    title: Ardèche
+    région: 84
+  '08':
+    title: Ardennes
+    région: 44
+  '09':
+    title: Ariège
+    région: 76
+  10:
+    title: Aube
+    région: 44
+  11:
+    title: Aude
+    région: 76
+  12:
+    title: Aveyron
+    région: 76
+  13:
+    title: Bouches-du-Rhône
+    région: 93
+  14:
+    title: Calvados
+    région: 28
+  15:
+    title: Cantal
+    région: 84
+  16:
+    title: Charente
+    région: 75
+  17:
+    title: Charente-Maritime
+    région: 75
+  18:
+    title: Cher
+    région: 24
+  19:
+    title: Corrèze
+    région: 75
+  2A:
+    title: Corse-du-Sud
+    région: 94
+  2B:
+    title: Haute-Corse
+    région: 94
+  21:
+    title: Côte-d'Or
+    région: 27
+  22:
+    title: Côtes-d'Armor
+    région: 53
+  23:
+    title: Creuse
+    région: 75
+  24:
+    title: Dordogne
+    région: 75
+  25:
+    title: Doubs
+    région: 27
+  26:
+    title: Drôme
+    région: 84
+  27:
+    title: Eure
+    région: 28
+  28:
+    title: Eure-et-Loir
+    région: 24
+  29:
+    title: Finistère
+    région: 53
+  30:
+    title: Gard
+    région: 76
+  31:
+    title: Haute-Garonne
+    région: 76
+  32:
+    title: Gers
+    région: 76
+  33:
+    title: Gironde
+    région: 75
+  34:
+    title: Hérault
+    région: 76
+  35:
+    title: Ille-et-Vilaine
+    région: 53
+  36:
+    title: Indre
+    région: 24
+  37:
+    title: Indre-et-Loire
+    région: 24
+  38:
+    title: Isère
+    région: 84
+  39:
+    title: Jura
+    région: 27
+  40:
+    title: Landes
+    région: 75
+  41:
+    title: Loir-et-Cher
+    région: 24
+  42:
+    title: Loire
+    région: 84
+  43:
+    title: Haute-Loire
+    région: 84
+  44:
+    title: Loire-Atlantique
+    région: 52
+    altLabels:
+      - LOIRE-ATLANTIQUE
+  45:
+    title: Loiret
+    région: 24
+  46:
+    title: Lot
+    région: 76
+  47:
+    title: Lot-et-Garonne
+    région: 75
+  48:
+    title: Lozère
+    région: 76
+  49:
+    title: Maine-et-Loire
+    région: 52
+    altLabels:
+      - MAINE-ET-LOIRE
+  50:
+    title: Manche
+    région: 28
+  51:
+    title: Marne
+    région: 44
+  52:
+    title: Haute-Marne
+    région: 44
+  53:
+    title: Mayenne
+    région: 52
+    altLabels:
+      - MAYENNE
+  54:
+    title: Meurthe-et-Moselle
+    région: 44
+  55:
+    title: Meuse
+    région: 44
+  56:
+    title: Morbihan
+    région: 53
+  57:
+    title: Moselle
+    région: 44
+  58:
+    title: Nièvre
+    région: 27
+  59:
+    title: Nord
+    région: 32
+  60:
+    title: Oise
+    région: 32
+  61:
+    title: Orne
+    région: 28
+  62:
+    title: Pas-de-Calais
+    région: 32
+  63:
+    title: Puy-de-Dôme
+    région: 84
+  64:
+    title: Pyrénées-Atlantiques
+    région: 75
+  65:
+    title: Hautes-Pyrénées
+    région: 76
+  66:
+    title: Pyrénées-Orientales
+    région: 76
+  67:
+    title: Bas-Rhin
+    région: 44
+  68:
+    title: Haut-Rhin
+    région: 44
+  69:
+    title: hône
+    région: 84
+  70:
+    title: Haute-Saône
+    région: 27
+  71:
+    title: Saône-et-Loire
+    région: 27
+  72:
+    title: Sarthe
+    région: 52
+    altLabels:
+      - SARTHE
+  73:
+    title: Savoie
+    région: 84
+  74:
+    title: Haute-Savoie
+    région: 84
+  75:
+    title: Paris
+    région: 11
+  76:
+    title: Seine-Maritime
+    région: 28
+  77:
+    title: Seine-et-Marne
+    région: 11
+  78:
+    title: Yvelines
+    région: 11
+  79:
+    title: Deux-Sèvres
+    région: 75
+  80:
+    title: Somme
+    région: 32
+  81:
+    title: Tarn
+    région: 76
+  82:
+    title: Tarn-et-Garonne
+    région: 76
+  83:
+    title: Var
+    région: 93
+  84:
+    title: Vaucluse
+    région: 93
+  85:
+    title: Vendée
+    région: 52
+    altLabels:
+      - VENDEE
+  86:
+    title: Vienne
+    région: 75
+  87:
+    title: Haute-Vienne
+    région: 75
+  88:
+    title: Vosges
+    région: 44
+  89:
+    title: Yonne
+    région: 27
+  90:
+    title: Territoire de Belfort
+    région: 27
+  91:
+    title: Essonne
+    région: 11
+  92:
+    title: Hauts-de-Seine
+    région: 11
+  93:
+    title: Seine-Saint-Denis
+    région: 11
+  94:
+    title: Val-de-Marne
+    région: 11
+  95:
+    title: Val-d'Oise
+    région: 11
