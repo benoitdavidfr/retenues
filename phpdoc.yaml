@@ -1,0 +1,16 @@
+title: retenues - maquette API d'accès aux retenues
+path: /geoapi/retenues
+doc: |
+  synchro:
+    http://localhost/synchro.php?remote=http://prod.geoapi.fr&dir=geoapi/retenues
+journal: |
+  28/1/2020:
+    création
+    
+phpScripts:
+  - /geoapi/retenues/index.php
+phpIncludes:
+htmlFiles:
+  - /geoapi/retenues/apidef.yaml
+  - /geoapi/retenues/terms.html
+
