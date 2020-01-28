@@ -4,7 +4,7 @@ info:
   description: >-
     Maquette d'API d'accès aux informations de remplissage des retenues d'eau.
   version: '0.1'
-  termsOfService: 'http://retenues.geoapi.fr/v1/terms/'
+  termsOfService: 'http://retenues.geoapi.fr/v1/terms'
   contact:
     email: retenues@geoapi.fr
   license:
@@ -117,7 +117,7 @@ definitions:
                 - num
                 - nom
                 - nature
-                - region
+                - nomRegion
                 - departement
                 - riviere
                 - date_construction
@@ -127,27 +127,29 @@ definitions:
                 - usages
               properties:
                 num:
-                  type: integer
                   description: identifiant de la retenue unique pour la base
+                  type: integer
                 nom:
-                  type: string
                   description: nom donné à la retenue
+                  type: string
                 nature:
                   type: string
-                  enum: [Retenue "classique"]
-                region:
-                  type: string
+                  enum: [Retenue "classique", retenue "linéaire" - vallée de rivière]
+                nomRegion:
                   description: nom de la région dans laquelle la retenue est localisée
+                  type: string
                 departement:
-                  type: string
                   description: code INSEE du département dans lequel la retenue est localisée
+                  type: string
+                nomCommune:
+                  description: nom de la commune dans laquelle la retenue est localisée
+                  type: string
                 riviere:
-                  type: string
                   description: nom de la rivière sur laquelle est située la retenue
-                date_construction:
                   type: string
-                  format: date
-                  description: date de construction en format ISO 8601
+                annee_construction:
+                  type: string
+                  description: année de construction ou vide si inconnue
                 volume(Mm3):
                   type: number
                   description: volume de la retenue en million de mètres cube
@@ -165,7 +167,7 @@ definitions:
                     enum:
                       - Hydroélectricité
                       - Irrigation
-                      - Alim. en eau
+                      - Alimentation en eau
                       - Crues
                       - Loisirs
                       - Tourisme

@@ -16,6 +16,7 @@ if (0) { // Mise hors service
 }
 
 require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__.'/dept.inc.php';
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -79,27 +80,25 @@ if (preg_match('!^/(v1/)?retenues$!', $_SERVER['PATH_INFO'])) {
     $coord = [floatval(str_replace(',','.',$rec['Lon'])), floatval(str_replace(',','.',$rec['Lat']))];
     //print_r($rec);
     //echo $rec['Date construction'];
-    if (preg_match('!^(\d+)/(\d+)/(\d+)$!', $rec['Date construction'], $matches))
-      $date_construction = "$matches[3]-$matches[2]-$matches[1]";
-    elseif (preg_match('!^(\d+)$!', $rec['Date construction'], $matches))
-      $date_construction = $matches[1];
-    else
-      $date_construction = $rec['Date construction'];
-    //print_r($date_construction);
+    $usages = explode('/', $rec['Usages']);
+    foreach ($usages as $i => $usage)
+      $usages[$i] = trim($usage);
     $features[] = [
       'type'=> 'Feature',
       'properties'=> [
-        'num' => $rec['Num'],
+        'num' => intval($rec['Num']),
         'nom' => $rec['Nom'],
         'nature' => $rec['Nature'],
-        'region' => $rec['Région'],
-        'departement' => $rec['Département'],
+        'nomRegion' => $rec['Région'],
+        'departement' => Depts::idFromName($rec['Département']),
+        'nomDepartement' => $rec['Département'],
+        'nomCommune' => $rec['Commune'],
         'riviere' => $rec['Riviere'],
-        'date_construction' => $date_construction,
-        'volume(Mm3)' => str_replace(',','.',$rec['Volume (Mm3)']),
-        'superficie(ha)' => str_replace(',','.',$rec['superficie (ha)']),
-        'altitude(mNGF)' => str_replace(',','.',$rec['altitude (mNGF)']),
-        'usages' => explode('/', $rec['Usages']),
+        'annee_construction' => $rec['Date construction'],
+        'volume(Mm3)' => floatval(str_replace(',','.',$rec['Volume (Mm3)'])),
+        'superficie(ha)' => floatval(str_replace(',','.',$rec['superficie (ha)'])),
+        'altitude(mNGF)' => floatval(str_replace(',','.',$rec['altitude (mNGF)'])),
+        'usages' => $usages,
       ],
       'geometry'=> [
         'type'=> 'Point',
@@ -108,7 +107,8 @@ if (preg_match('!^/(v1/)?retenues$!', $_SERVER['PATH_INFO'])) {
     ];
   }
   header('Content-Type: application/json');
-  echo json_encode(['type'=>'FeatureCollection', 'features'=>$features], JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
+  echo json_encode(['type'=>'FeatureCollection', 'features'=>$features],
+    JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
   die();
 }
 
@@ -140,7 +140,8 @@ if (preg_match('!^/(v1/)?retenues/(\d+)$!', $_SERVER['PATH_INFO'], $matches)) {
     ];
   }
   header('Content-type: application/json; charset="utf8"');
-  echo json_encode(['num'=> 21, 'mesures'=> $mesures], JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
+  echo json_encode(['num'=> 21, 'mesures'=> $mesures],
+    JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
   die();
 }
 
