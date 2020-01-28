@@ -29,23 +29,6 @@ if (0) {
   echo "<pre>_SERVER="; print_r($_SERVER); echo "</pre>\n";
 }
 
-// identifie le type MIME demandé parmi ceux transmis
-function http_accept(array $mimeTypes): ?string {
-  if (!isset($_SERVER['HTTP_ACCEPT']))
-    return null;
-  $http_accepts = explode(',',$_SERVER['HTTP_ACCEPT']);
-  //echo "<pre>http_accepts="; print_r($http_accepts); echo "</pre>\n"; die();
-  foreach ($http_accepts as $http_accept)
-    if (in_array($http_accept, $mimeTypes))
-      return $http_accept;
-  return null;
-}
-
-function ahref(string $url): string {
-  return "<a href='$url'>$url</a>";
-}
-
-
 // /
 // affichage de la spec Swagger en JSON
 if (!isset($_SERVER['PATH_INFO']) || ($_SERVER['PATH_INFO']=='/')
@@ -66,7 +49,7 @@ if (preg_match('!^/(v1/)?terms$!', $_SERVER['PATH_INFO'])) {
 
 // /retenues
 if (preg_match('!^/(v1/)?retenues$!', $_SERVER['PATH_INFO'])) {
-  $departement = (isset($_GET['departement']) ? $_GET['departement'] : null);
+  $cdeptReq = (isset($_GET['departement']) ? $_GET['departement'] : null);
   
   $features = [];
 
@@ -77,6 +60,9 @@ if (preg_match('!^/(v1/)?retenues$!', $_SERVER['PATH_INFO'])) {
   while ($record = fgetcsv($file, 1024, ';', '"')) {
     foreach ($header as $i => $k)
       $rec[$k] = $record[$i];
+    $cdept = Depts::idFromName($rec['Département']);
+    if ($cdeptReq && ($cdept <> $cdeptReq))
+      continue;
     $coord = [floatval(str_replace(',','.',$rec['Lon'])), floatval(str_replace(',','.',$rec['Lat']))];
     //print_r($rec);
     //echo $rec['Date construction'];
@@ -90,7 +76,7 @@ if (preg_match('!^/(v1/)?retenues$!', $_SERVER['PATH_INFO'])) {
         'nom' => $rec['Nom'],
         'nature' => $rec['Nature'],
         'nomRegion' => $rec['Région'],
-        'departement' => Depts::idFromName($rec['Département']),
+        'departement' => $cdept,
         'nomDepartement' => $rec['Département'],
         'nomCommune' => $rec['Commune'],
         'riviere' => $rec['Riviere'],
@@ -115,7 +101,8 @@ if (preg_match('!^/(v1/)?retenues$!', $_SERVER['PATH_INFO'])) {
 // /retenues/{num}
 if (preg_match('!^/(v1/)?retenues/(\d+)$!', $_SERVER['PATH_INFO'], $matches)) {
   $num = $matches[1];
-  
+  $mindate = (isset($_GET['date']) ? $_GET['date'] : null);
+    
   /*
   if (!($file = fopen(__DIR__."/data/retenues-20200121-Occitanie.csv",'r')))
     die("Erreur ouverture du fichier retenues-20200121-Occitanie.csv");
@@ -132,8 +119,11 @@ if (preg_match('!^/(v1/)?retenues/(\d+)$!', $_SERVER['PATH_INFO'], $matches)) {
   $mesures = []; // [ date (jj/mm/aaaa) => [côte (m), volume (Mm3), surface (ha)]]
   while ($record = fgetcsv($file, 1024, ';', '"')) {
     preg_match('!^(\d+)/(\d+)/(\d+)$!', $record[0], $matches);
+    $date = "$matches[3]-$matches[2]-$matches[1]";
+    if ($mindate && (strcmp($date, $mindate) <= 0))
+      continue;
     $mesures[] = [
-      'date'=> "$matches[3]-$matches[2]-$matches[1]",
+      'date'=> $date,
       'cote_bassin(m)'=> floatval(str_replace(',','.',$record[1])),
       'volume(Mm3)'=> floatval(str_replace(',','.',$record[2])),
       'surface(ha)'=> floatval(str_replace(',','.',$record[3])),
