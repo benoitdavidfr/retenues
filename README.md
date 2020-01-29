@@ -7,9 +7,9 @@ Une maquette est consultable sur [https://retenues.geoapi.fr/v1/](https://retenu
 
 
 ### Exemples de requêtes
-* [Spécifications de l'API en OpenAPI](https://retenues.geoapi.fr/v1/)
 * [Liste GeoJSON des retenues](https://retenues.geoapi.fr/v1/retenues)
 * [Liste GeoJSON des retenues du département 65](https://retenues.geoapi.fr/v1/retenues?departement=65)
 * [Liste JSON des mesures sur le barrage d'Astarac](https://retenues.geoapi.fr/v1/retenues/21)
 * [Liste JSON des mesures sur le barrage d'Astarac
   après le 30/6/2019](https://retenues.geoapi.fr/v1/retenues/21?date=2019-06-30)
+* [Spécifications de l'API en OpenAPI](https://retenues.geoapi.fr/v1/)
